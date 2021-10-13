@@ -37,30 +37,22 @@ const covertStringToCurrency = (str) => {
 }
 
 const task = async () => {
+  console.log('Start task in-progress by temp ', tempPrice)
   goldDetail = await getGoldPriceAPI()
   let currentPrice = covertStringToCurrency(goldDetail.price.gold_bar.sell)
 
   if (currentPrice <= expectedPrice) {
+    console.log('currentPrice is less than expectedPrice ', currentPrice, expectedPrice)
     if ((currentPrice !== tempPrice) || (tempPrice === 0)) {
       tempPrice = currentPrice
       const flex = templateMessage(goldDetail)
       await client.broadcast(flex)
+      console.log('Send flex ', tempPrice)
     }
   }
 }
 
 const templateMessage = (obj) => {
-  // let text = `ประจำวันที่ ${obj.date}
-  // ${obj.update_time}
-
-  // 🏆 ทองคำแท่ง 96.5%
-  // - ขายออก:  ${obj.price.gold_bar.buy}
-  // - รับซื้อ:      ${obj.price.gold_bar.sell}
-
-  // 👑 ทองรูปพรรณ 96.5%
-  // - ขายออก:  ${obj.price.gold.buy}
-  // - รับซื้อ:      ${obj.price.gold.sell}
-  // `
   let text = `{
     "type": "bubble",
     "body": {
@@ -245,7 +237,6 @@ const templateMessage = (obj) => {
     }
 }`
 
-  // return { type: 'text', text }
   return {
     type: "flex",
     altText: 'New update ⚡️ ราคาทอง',
