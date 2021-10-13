@@ -36,13 +36,14 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', async (req, res) => {
   const text = req.body.events[0].message.text
+  const replyToken = req.body.events[0].replyToken
 
   const message = {
     type: 'text',
     text: 'Zhongli said : ' + text
   }
 
-  await client.replyMessage(req.body.events[0].replyToken, message)
+  await client.replyMessage(replyToken, message)
 
   res.send('test webhook')
 })
