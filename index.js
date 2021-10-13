@@ -1,7 +1,6 @@
 const express = require('express')
 const cron = require('node-cron')
 const axios = require('axios')
-const bodyParser = require('body-parser')
 const line = require('@line/bot-sdk')
 const app = express()
 const port = 3000
