@@ -253,9 +253,9 @@ const templateMessage = (obj) => {
   }
 }
 
-cron.schedule(config.schedule, task, {
-  timezone: config.timezone
-})
+// cron.schedule(config.schedule, task, {
+//   timezone: config.timezone
+// })
 
 
 app.get('/test', (req, res) => {
