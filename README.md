@@ -2,7 +2,7 @@
 
 A simple rest api that helps you noti your plugin by providing useful data like gold price market.
 
-![Gold Notify Example](img/gold-notify.png)
+![Gold Notify Example](img/gold-notify-new.png)
 
 
 ## Getting Started
