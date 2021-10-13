@@ -4,7 +4,8 @@
   "description": "## A simple rest api that helps you noti your plugin by providing useful data like gold price market.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node index.js",
+    "watch": "nodemon index.js"
   },
   "repository": {
     "type": "git",
