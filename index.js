@@ -2,8 +2,8 @@ const express = require('express')
 const cron = require('node-cron')
 const axios = require('axios')
 const line = require('@line/bot-sdk')
+const cors = require('cors')
 const app = express()
-const port = 3000
 require('dotenv').config()
 
 let goldDetail = {}
@@ -14,10 +14,12 @@ const client = new line.Client({
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 })
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({
   extended: true
 }))
+app.set('port', 3000)
 
 const config = {
   schedule: '* * * * *',
@@ -264,6 +266,6 @@ app.post('/webhook', async (req, res) => {
   res.send('test webhook')
 })
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Start`)
+app.listen(app.get('port'), () => {
+  console.log(`Start`, app.get('port'))
 })
