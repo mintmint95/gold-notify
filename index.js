@@ -7,6 +7,8 @@ const port = 3000
 require('dotenv').config()
 
 let goldDetail =  {}
+let expectedPrice = +process.env.EXPECTED_PRICE || 28000
+let tempPrice = 0
 
 const client = new line.Client({
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
@@ -26,11 +28,19 @@ const config = {
 const task = async () => {
   const res = await axios.get(config.baseURL)
   goldDetail = res.data.response
+
+  let currentPrice = parseFloat(goldDetail.price.gold_bar.sell.split(',').join(''))
+
+  if (currentPrice <= expectedPrice) {
+    if ((currentPrice !== tempPrice) || (tempPrice === 0)) {
+      tempPrice = currentPrice
+      await client.broadcast(templateMessage(goldDetail))
+    }
+  }
 }
 
 const templateMessage = (obj) => {
-  let text = `
-  ประจำวันที่ ${obj.date}
+  let text = `ประจำวันที่ ${obj.date}
   ${obj.update_time}
   
   🏆 ทองคำแท่ง 96.5%
@@ -45,21 +55,21 @@ const templateMessage = (obj) => {
   return { type: 'text', text }
 }
 
-// cron.schedule(config.schedule, task, { timezone: config.timezone })
+cron.schedule(config.schedule, task, { timezone: config.timezone })
 
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
 
-app.post('/webhook', async (req, res) => {
-  const replyToken = req.body.events[0].replyToken
-  await task()
-  const message = templateMessage(goldDetail)
+// app.post('/webhook', async (req, res) => {
+//   const replyToken = req.body.events[0].replyToken
+//   await task()
+//   const message = templateMessage(goldDetail)
 
-  await client.replyMessage(replyToken, message)
-  res.send('test webhook')
-})
+//   await client.replyMessage(replyToken, message)
+//   res.send('test webhook')
+// })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
