@@ -1,17 +1,24 @@
-# gold-notify
+# Gold Notify
 
-## A simple rest api that helps you noti your plugin by providing useful data like gold price market.
+A simple rest api that helps you noti your plugin by providing useful data like gold price market.
+
+![Gold Notify Example](img/gold-notify.png)
 
 
-### How to run develop.
+## Getting Started
 
-Install the dependencies and devDependencies and start the server.
+### Prerequisite
+1. Make sure that you already have [Node.js](https://nodejs.org/en/) 12 or above
 
-```sh
-$ npm i
-$ npm .
+2. Clone repository
+
+```bash
+git clone https://github.com/mintmint95/gold-notify.git
 ```
 
+### Installing
+Install the package via npm
 
-TBD....
-
+```bash
+npm install
+```
