@@ -25,16 +25,24 @@ const config = {
   timezone: 'Asia/Bangkok'
 }
 
+const getGoldPriceAPI = async () => {
+  const result = await axios.get(config.baseURL)
+  return result.data.response
+}
+
+const covertStringToCurrency = (str) => {
+  return parseFloat(str.split(',').join(''))
+}
+
 const task = async () => {
-  const res = await axios.get(config.baseURL)
-  goldDetail = res.data.response
-
-  let currentPrice = parseFloat(goldDetail.price.gold_bar.sell.split(',').join(''))
-
+  goldDetail = await getGoldPriceAPI()
+  let currentPrice = covertStringToCurrency(goldDetail.price.gold_bar.sell)
+  
   if (currentPrice <= expectedPrice) {
     if ((currentPrice !== tempPrice) || (tempPrice === 0)) {
       tempPrice = currentPrice
-      await client.broadcast(templateMessage(goldDetail))
+      const flex = templateMessage(goldDetail)
+      await client.broadcast(flex)
     }
   }
 }
@@ -58,18 +66,13 @@ const templateMessage = (obj) => {
 cron.schedule(config.schedule, task, { timezone: config.timezone })
 
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
-// app.post('/webhook', async (req, res) => {
-//   const replyToken = req.body.events[0].replyToken
-//   await task()
-//   const message = templateMessage(goldDetail)
-
-//   await client.replyMessage(replyToken, message)
-//   res.send('test webhook')
-// })
+app.post('/webhook', async (req, res) => {
+  res.send('test webhook')
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
