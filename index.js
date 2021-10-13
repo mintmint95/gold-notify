@@ -1,8 +1,20 @@
 const express = require('express')
 const cron = require('node-cron')
 const axios = require('axios')
+const bodyParser = require('body-parser')
+const line = require('@line/bot-sdk')
 const app = express()
 const port = 3000
+require('dotenv').config()
+
+const client = new line.Client({
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+})
+
+app.use(express.json())
+app.use(express.urlencoded({
+  extended: true
+}))
 
 const config = {
   schedule: '* * * * *',
@@ -23,7 +35,16 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post('/webhook', (req, res) => {
+app.post('/webhook', async (req, res) => {
+  const text = req.body.events[0].message.text
+
+  const message = {
+    type: 'text',
+    text: 'Zhongli said : ' + text
+  }
+
+  await client.replyMessage(req.body.events[0].replyToken, message)
+
   res.send('test webhook')
 })
 
