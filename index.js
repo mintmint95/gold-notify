@@ -39,7 +39,7 @@ const covertStringToCurrency = (str) => {
 const task = async () => {
   console.log('Start task in-progress by temp ', tempPrice)
   goldDetail = await getGoldPriceAPI()
-  let currentPrice = covertStringToCurrency(goldDetail.price.gold_bar.sell)
+  let currentPrice = covertStringToCurrency(goldDetail.price.gold_bar.buy)
 
   if (currentPrice <= expectedPrice) {
     console.log('currentPrice is less than expectedPrice ', currentPrice, expectedPrice)
