@@ -24,6 +24,8 @@ app.set('port', process.env.PORT || 3000)
 const config = {
   schedule: '* * * * *',
   baseURL: 'https://thai-gold-api.herokuapp.com/latest',
+  scheduleForHealthCheck: '5 * * * *',
+  appURL: 'https://gold-notify-by-zhongli.herokuapp.com/test',
   timezone: 'Asia/Bangkok'
 }
 
@@ -243,6 +245,12 @@ const templateMessage = (obj) => {
     contents: JSON.parse(text),
   }
 }
+
+cron.schedule(config.scheduleForHealthCheck, () => {
+  axios.get(config.appURL).then(res => {
+    console.log('Running health check every 5 minutes: ' + res.data)
+  })
+}, {timezone: config.timezone})
 
 cron.schedule(config.schedule, task, {
   timezone: config.timezone
