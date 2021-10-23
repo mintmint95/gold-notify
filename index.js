@@ -24,7 +24,7 @@ app.set('port', process.env.PORT || 3000)
 const config = {
   schedule: '* * * * *',
   baseURL: 'https://thai-gold-api.herokuapp.com/latest',
-  scheduleForHealthCheck: '5 * * * *',
+  scheduleForHealthCheck: '*/5 * * * *',
   appURL: 'https://gold-notify-by-zhongli.herokuapp.com/test',
   timezone: 'Asia/Bangkok'
 }
